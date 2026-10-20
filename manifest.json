@@ -1,0 +1,9 @@
+{
+  "name": "كشك بركة - Kosk Baraka",
+  "short_name": "KB",
+  "icons": [{"src": "icon.png","sizes": "1280x1280","type": "image/png"}],
+  "start_url": "/Kosk-baraka/",
+  "display": "standalone",
+  "background_color": "#FFEB00",
+  "theme_color": "#FFEB00"
+}
