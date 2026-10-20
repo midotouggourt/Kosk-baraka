@@ -48,12 +48,11 @@ body{display:flex;flex-direction:row-reverse;height:100vh;overflow:hidden;backgr
 table.list{width:100%;border-collapse:collapse;margin-top:8px}
 table.list th{background:#1e4a9c;color:#fff;padding:7px;font-size:9px}
 table.list td{padding:6px;border-bottom:1px solid #e0e0e0;font-size:10px;text-align:center}
-.login{position:fixed;inset:0;background:linear-gradient(135deg,#0d47a1,#1e2f4a);display:flex;align-items:center;justify-content:center;z-index:9999}
-.loginBox{background:#fff;padding:20px;border-radius:18px;width:94%;max-width:360px;text-align:center}
-.loginUser{display:flex;gap:6px;margin:10px 0}
-.loginUser button{flex:1;padding:10px;border:2px solid #1e4a9c;border-radius:10px;background:#fff;font-weight:900;cursor:pointer;font-size:11px}
+  .login{position:fixed;inset:0;background:linear-gradient(135deg,#1e4a9c,#0d47a1);display:flex;align-items:center;justify-content:center;padding:20px;z-index:9999}
+.loginBox{background:#fff;padding:45px 35px;border-radius:24px;width:92vw;max-width:850px;box-shadow:0 25px 80px rgba(0,0,0,0.4);text-align:center}
+.loginUser{display:flex;gap:18px;margin:28px 0 0 0}
+.loginUser button{flex:1;padding:28px 15px;border:none;border-radius:18px;font-size:22px;font-weight:800;cursor:pointer;min-height:95px}
 .loginUser button.active{background:#1e4a9c;color:#fff}
-.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;z-index:99999}
 .modal.show{display:flex}
 .modalBig{background:#fff;padding:14px;border-radius:16px;width:96%;max-width:420px;max-height:90vh;overflow:auto;box-shadow:0 10px 30px #0005}
 .priceBtn{width:100%;padding:15px;margin:6px 0;border:2px solid #1e4a9c;border-radius:12px;background:#fff;font-weight:900;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:12px}
