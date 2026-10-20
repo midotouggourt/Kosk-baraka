@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>كشك بركة - kosk Baraka</title>
-<link rel="icon" href="icon.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#FFEB00">
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
@@ -73,7 +70,7 @@ table.list td{padding:6px;border-bottom:1px solid #e0e0e0;font-size:10px;text-al
 </style>
 </head>
 <body>
-<div id="login" class="login"><div class="loginBox"><h1 style="color:#1e4a9c">🏪 كشك بركة <span class="liveBadge">LIVE</span></h1><h3 style="color:#2e7d32">Kosk BARAKA - Touggourt - فندور بيع فقط 🛒</h3><div class="loginUser"><button id="btnAdmin" class="active" onclick="setUser('admin')">👑<br>Admin</button><button id="btnVend" onclick="setUser('vendeur')">🧑‍💼<br>Vendeur</button></div><input id="lp" type="password" class="input" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px;background:#fff3cd;border:2px solid #1e4a9c" autofocus><p style="font-size:8px;color:green">✅ كشك بركة LIVE - kosk baraka touggourt - متزامن</p><p style="font-size:9px;color:#0d47a1">Admin: 1234 | Vendeur: 5678</p><p id="firebaseStatus" style="font-size:8px;color:#22c55e">🔴 LIVE - جاري الاتصال...</p></div></div>
+<div id="login" class="login"><div class="loginBox"><h1 style="color:#1e4a9c">🏪 HIRRO 23.2 <span class="liveBadge">LIVE</span></h1><h3 style="color:#2e7d32">BARAK PRO by Mido - فندور بيع فقط 🛒</h3><div class="loginUser"><button id="btnAdmin" class="active" onclick="setUser('admin')">👑<br>Admin</button><button id="btnVend" onclick="setUser('vendeur')">🧑‍💼<br>Vendeur</button></div><input id="lp" type="password" class="input" placeholder="••••" style="text-align:center;font-size:22px;letter-spacing:8px;background:#fff3cd;border:2px solid #1e4a9c" autofocus><p style="font-size:8px;color:green">✅ 23.2 LIVE - Firebase baraka-kiosk - متزامن</p><p style="font-size:9px;color:#0d47a1">Admin: 1234 | Vendeur: 5678</p><p id="firebaseStatus" style="font-size:8px;color:#22c55e">🔴 LIVE - جاري الاتصال...</p></div></div>
 <div id="sidebar">
 <button id="bSale" class="active" onclick="showV('sale')"><b>🛒</b>البيع <span class="liveBadge">LIVE</span></button><button id="bList" onclick="showV('list')"><b>📦</b>المخزون</button><button id="bAdd" onclick="showV('add')"><b>➕</b>إضافة</button><button id="bSup" onclick="showV('sup')"><b>🚚</b>الموردين</button><button id="bClients" onclick="showV('clients')"><b>👥</b>الزبائن</button><button id="bStats" onclick="showV('stats')"><b>📊</b>احصاء</button><button id="bSettings" onclick="showV('settings')"><b>⚙️</b>اعدادات</button><button id="bFact" onclick="showV('fact')"><b>🧾</b>فواتير</button><button onclick="logout()" style="background:#c62828;color:#fff"><b>🚪</b>خروج</button>
 </div>
@@ -83,7 +80,7 @@ table.list td{padding:6px;border-bottom:1px solid #e0e0e0;font-size:10px;text-al
 <div class="topSaleTop"><h1 id="bigTotal">0 سنتيم</h1><select id="saleClient" class="select" style="max-width:105px;padding:6px;font-size:9px"><option value="">زبون عادي</option></select></div>
 <div style="display:flex;gap:5px;width:100%"><div class="barcodeBox" style="flex:1"><span style="font-size:18px">📷</span><input id="barcodeSale" placeholder="امسح - كل العائلات + عدد غير محدود وزن" onkeydown="if(event.key==='Enter') scanBarcodeSale()" oninput="autoScanBarcode()" autofocus><button class="btn btn-blue" style="padding:6px 10px" onclick="scanBarcodeSale()">➕</button></div></div>
 <div style="display:flex;gap:6px;width:100%"><input id="searchSale" class="input" placeholder="🔍 بحث اي منتوج وزن - لوز فستق زيتون قهوة" style="flex:1;padding:7px;font-size:11px;background:#fff" oninput="renderAll()"><button class="btn btn-yellow" style="padding:6px 10px;font-size:9px" onclick="sellCredit()">💳 كريدي</button><button class="btn" style="padding:6px 8px;font-size:9px;background:#ff9800;color:#000;border:2px solid #000" onclick="holdCurrentSale()">⏸️ تعليق</button></div>
-<p style="color:#ffeb3b;font-size:8px;text-align:center">✅ كشك بركة LIVE - فندور بيع فقط 🛒 + وزن 100دج/600دج + Firebase LIVE متزامن</p>
+<p style="color:#ffeb3b;font-size:8px;text-align:center">✅ 23.2 LIVE - فندور بيع فقط 🛒 + وزن 100دج/600دج + Firebase LIVE متزامن</p>
 </div>
 <div id="heldBar" class="heldBar"><div style="font-size:9px;font-weight:900;color:#666">المعلقة:</div><div id="heldList" style="display:flex;gap:6px"></div><div id="noHeld" style="font-size:9px;color:#999">لا يوجد</div></div>
 <div class="centerSale"><div class="tableWrap"><div class="tableHead"><span>المنتج</span><span>كمية</span><span>سعر س</span><span>اجمالي س</span></div><div class="tableBody" id="cartBody"></div></div><div class="leftActions"><div id="selectedInfo" style="display:none;background:#ffeb3b;border:2px solid #000;border-radius:6px;padding:3px;font-size:7px;font-weight:900;width:62px;text-align:center"></div><button onclick="changeQty(1)">+</button><button onclick="changeQty(-1)">-</button><button onclick="removeLast()">🗑️</button><button onclick="clearSelection()" style="font-size:8px;height:28px;background:#e3f2fd">↩️</button><div style="margin-top:auto;background:#fff;padding:5px;border-radius:9px;text-align:center;width:62px;border:2px solid #000"><b id="smallTot">0</b><br><small>سنتيم</small></div></div></div>
