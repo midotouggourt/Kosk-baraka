@@ -247,25 +247,5 @@ function confirmPurchase(){if(!purCart.length){showToast('⛔ فارغة',false)
 function renderFact(){let b=document.getElementById('factBody');if(!b) return;b.innerHTML='';purchases.forEach(p=>{b.innerHTML+=`<tr><td>شراء</td><td>${new Date(p.date).toLocaleString('ar-DZ')}</td><td>${p.sup}</td><td>${p.total} س</td><td style="color:${p.debt>0?'red':'green'}">${p.debt} س</td></tr>`;});sales.filter(s=>s.type==='credit').forEach(s=>{b.innerHTML+=`<tr><td>كريدي</td><td>${new Date(s.date).toLocaleString('ar-DZ')}</td><td>${s.client||''}</td><td>${s.sell} س</td><td style="color:red">${s.sell} س</td></tr>`;});}
 renderAll();
 </script>
-  <script>
-(function(){
-  try{
-    var saved = localStorage.getItem('kosk_products');
-    if(saved){
-      var arr = JSON.parse(saved);
-      if(window.products) window.products = arr;
-      if(typeof products !== 'undefined') products = arr;
-    }
-    var origSave = window.saveProducts || function(){};
-    setInterval(function(){
-      try{
-        if(typeof products !== 'undefined' && products.length>0){
-          localStorage.setItem('kosk_products', JSON.stringify(products));
-        }
-      }catch(e){}
-    },1000);
-  }catch(e){}
-})();
-</script>
 </body>
 </html>
