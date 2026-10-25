@@ -222,17 +222,36 @@ try{if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);}catch(e){}
 const db=firebase.database();
 const FB_PATH="hirro_23_2_live";
 let firebaseConnected=false;
+let isSyncing=false;
+let lastSyncTime=0;
 db.ref('.info/connected').on('value',s=>{
  firebaseConnected=s.val();
  let t=document.getElementById('firebaseStatus');
  if(!t){ t=document.createElement('div'); t.id='firebaseStatus'; t.style.cssText='position:fixed;bottom:5px;left:5px;z-index:9999999;background:#000;color:#0f0;padding:5px 10px;border-radius:6px;font-size:11px'; document.body.appendChild(t); }
- t.innerText=s.val()?'🟢 LIVE متصل':'🔴 غير متصل';
- t.style.color=s.val()?'#0f0':'#f00';
+ t.innerText=s.val()?'🟢 LIVE متصل - '+new Date().toLocaleTimeString():'🔴 غير متصل';
 });
-function saveToFirebase(){ if(!firebaseConnected) return; try{ db.ref(FB_PATH).set({prods: JSON.parse(localStorage.getItem('HIRRO_23_PRODS')||'[]'), sales: JSON.parse(localStorage.getItem('HIRRO_23_SALES')||'[]'), clients: JSON.parse(localStorage.getItem('HIRRO_23_CLIENTS')||'[]'), time: Date.now()}); }catch(e){} }
-setInterval(saveToFirebase,5000);
-let _setItem=localStorage.setItem;
-localStorage.setItem=function(k,v){ _setItem.apply(this,arguments); if(k.startsWith('HIRRO_23_')) saveToFirebase(); };
+db.ref(FB_PATH).on('value',snap=>{
+ let data=snap.val();
+ if(!data||!data.time) return;
+ if(data.time<=lastSyncTime) return;
+ if(Date.now()-data.time<2500 && data.time>lastSyncTime-5000) return;
+ isSyncing=true;
+ lastSyncTime=data.time;
+ if(data.prods){ prods=data.prods; localStorage.setItem('HIRRO_23_PRODS',JSON.stringify(prods)); }
+ if(data.sales){ sales=data.sales; localStorage.setItem('HIRRO_23_SALES',JSON.stringify(sales)); }
+ if(data.clients){ clients=data.clients; localStorage.setItem('HIRRO_23_CLIENTS',JSON.stringify(clients)); }
+ renderAll(); renderClients(); renderSup(); renderFact(); renderSalesFiltered(); renderFamProfitFiltered();
+ showToast('🔄 تزامن من جهاز آخر!',true);
+ setTimeout(()=>{isSyncing=false;},800);
+});
+function saveToFirebase(){ 
+ if(!firebaseConnected||isSyncing) return; 
+ lastSyncTime=Date.now();
+ try{ db.ref(FB_PATH).set({prods,sales,clients,time:lastSyncTime}); }catch(e){} 
+}
+setInterval(saveToFirebase,3000);
+let _origSet=localStorage.setItem;
+localStorage.setItem=function(k,v){ _origSet.apply(this,arguments); if(k.startsWith('HIRRO_23_')&&!isSyncing) saveToFirebase(); };
 </script>
 </body>
 </html>
