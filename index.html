@@ -96,6 +96,9 @@ table.list td{padding:6px;border-bottom:1px solid #e0e0e0;font-size:10px;text-al
 #receipt58{display:none}
 @media print{body *{visibility:hidden !important}#receipt58,#receipt58 *{visibility:visible !important}#receipt58{display:block !important;position:absolute;left:0;top:0;width:58mm;background:#fff;padding:2mm;font-family:monospace;color:#000}@page{size:58mm auto;margin:0}}
 @media(max-width:768px){#sidebar{width:100%;height:58px;flex-direction:row;justify-content:space-around;position:fixed;bottom:0;left:0;right:0;padding:3px;z-index:10}#sidebar button{width:42px;height:48px;font-size:7px}body{padding-bottom:58px}}
+.prodBox{z-index:1!important;position:relative!important}
+#prodGridSale{z-index:1!important;position:relative!important}
+div[style*="width:60px"]{z-index:60!important;position:relative!important;background:#d6dde8!important}
 </style>
 </head>
 <body>
@@ -169,26 +172,7 @@ let currentStatFilter={fromDate:null,toDate:null};
 let editId=null;
 function showV(id){if(currentUser==='vendeur'&&id!=='sale'){showToast('⛔ ممنوع - الفندور بيع فقط 🛒',false);return;}if(isPriceModalOpen) return;document.querySelectorAll('.view').forEach(v=>v.classList.remove('show'));document.getElementById(id).classList.add('show');document.querySelectorAll('#sidebar button').forEach(b=>b.classList.remove('active'));let btn=document.getElementById('b'+id.charAt(0).toUpperCase()+id.slice(1));if(btn) btn.classList.add('active');if(id==='sale') setTimeout(()=>{if(!isPriceModalOpen) document.getElementById('barcodeSale').focus()},200);if(id==='stats' && !currentStatFilter.fromDate) resetStats();if(id==='settings') loadSettings();}
 function showToast(m,ok=true){let t=document.createElement('div');t.className='toast '+(ok?'ok':'');t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2200);}
-function previewImg(e){
-  let f=e.target.files[0]; if(!f) return;
-  let reader=new FileReader();
-  reader.onload=function(ev){
-    let img=new Image();
-    img.src=ev.target.result;
-    img.onload=function(){
-      let c=document.createElement('canvas');
-      let MAX=500;
-      let w=img.width, h=img.height;
-      if(w>h){ if(w>MAX){ h*=MAX/w; w=MAX; } } else { if(h>MAX){ w*=MAX/h; h=MAX; } }
-      c.width=w; c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);
-      currentImg=c.toDataURL('image/jpeg',0.6); // هنا صغرتها لـ 70KB
-      let p=document.getElementById('preview');
-      if(p){ p.src=currentImg; p.style.display='block'; }
-    };
-  };
-  reader.readAsDataURL(f);
-}
+function previewImg(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=function(ev){let i=new Image();i.src=ev.target.result;i.onload=function(){let c=document.createElement('canvas');let M=500;let w=i.width,h=i.height;if(w>h){if(w>M){h*=M/w;w=M}}else{if(h>M){w*=M/h;h=M}}c.width=w;c.height=h;c.getContext('2d').drawImage(i,0,0,w,h);currentImg=c.toDataURL('image/jpeg',0.6);let p=document.getElementById('imgPrev');if(p)p.innerHTML=`<img src="${currentImg}" style="height:60px;width:100%;object-fit:cover;border-radius:8px">`;}};r.readAsDataURL(f);}
 function addBC(){let b=document.getElementById('bc').value.trim();if(!b) return;if(bcs.includes(b)){showToast('⛔ مضاف من قبل',false);document.getElementById('bc').value='';return;}let existingProd = prods.find(p=>p.barcodes.includes(b) && p.id!=editId);if(existingProd){showToast('⛔ موجود في: '+existingProd.name,false);document.getElementById('bc').value='';return;}bcs.push(b);document.getElementById('bc').value='';renderBC();document.getElementById('bc').focus();}
 function renderBC(){document.getElementById('bl').innerHTML=bcs.map((x,i)=>`<span style="background:#e8f5e9;padding:5px 10px;border-radius:14px;margin:3px;display:inline-block;font-size:10px">${x} <b style="color:red;cursor:pointer" onclick="bcs.splice(${i},1);renderBC()"> X</b></span>`).join('');}
 function onFamChange(){let fam=document.getElementById('fam').value;if(fam==='الوزن'){document.getElementById('qpb').value=1000;document.getElementById('boxQty').value=3;document.getElementById('lblQpb').textContent='قارو/علبة (1000غ=1كغ):';document.getElementById('lblBox').textContent='عدد العلب (كيلو):';document.getElementById('lblTotal').textContent='المجموع غرام:';document.getElementById('lblLow').textContent='حد قليل غرام:';document.getElementById('lblBuy').textContent='شراء س للكيلو:';document.getElementById('lblS1').textContent='بيع1 كيلو:';document.getElementById('lblS2').textContent='بيع2 جملة كيلو:';document.getElementById('lblS3').textContent='بيع3 100غ:';document.getElementById('lblS4').textContent='بيع4 300غ عرض:';document.getElementById('lowLimit').value=500;} else if(fam==='التبغ والكبريت'){document.getElementById('qpb').value=20;document.getElementById('boxQty').value=10;document.getElementById('lblQpb').textContent='قارو/علبة (مثلا 20):';document.getElementById('lblBox').textContent='عدد العلب (باكيات):';document.getElementById('lblTotal').textContent='المجموع قارو:';document.getElementById('lblLow').textContent='حد قليل قارو:';document.getElementById('lblBuy').textContent='شراء س (علبة):';document.getElementById('lblS1').textContent='بيع1 علبة:';document.getElementById('lblS2').textContent='بيع2 جملة:';document.getElementById('lblS3').textContent='بيع3 قارو:';document.getElementById('lblS4').textContent='بيع4 3 قارو عرض:';document.getElementById('lowLimit').value=20;} else {document.getElementById('qpb').value=1;document.getElementById('boxQty').value=12;document.getElementById('lblQpb').textContent='قارو/علبة (1=حبة):';document.getElementById('lblBox').textContent='عدد العلب (حبات):';document.getElementById('lblTotal').textContent='المجموع حبة:';document.getElementById('lblLow').textContent='حد قليل:';document.getElementById('lblBuy').textContent='شراء س:';document.getElementById('lblS1').textContent='بيع1:';document.getElementById('lblS2').textContent='بيع2:';document.getElementById('lblS3').textContent='بيع3:';document.getElementById('lblS4').textContent='بيع4 عرض:';document.getElementById('lowLimit').value=5;}calcStock();}
